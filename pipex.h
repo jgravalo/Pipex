@@ -19,14 +19,25 @@ char	**ft_split(char const *s, char c);
 
 char	*ft_strjoin(char *s1, char *s2);
 
+char    *ft_itoa(int n);
+
 int		search_path(char **envp);
 
 char	**split_docs(char *path);
 
 char	*access_comm(char *comm, char **docs);
 
+char    **modify_file(char *comm, char **file, int size);
+
+char    *modify_comm(char *comm, int size);
+
 int		exec_comm(char *comm, char **file, char **envp);
 
-int		pipex(char *comm, char **file, char **envp);
+char    **makesrc(char *file, char *zero);
+
+void	fzero(int fd);
+
+//int		pipex(char *comm, char **file, char **envp, int fd);
+int		pipex(char *comm, char **file, char **envp, char *dst);
 
 #endif

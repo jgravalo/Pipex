@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex2.c                                           :+:      :+:    :+:   */
+/*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:14:07 by jgravalo          #+#    #+#             */
-/*   Updated: 2022/11/25 14:06:06 by jgravalo         ###   ########.fr       */
+/*   Updated: 2022/12/15 16:47:49 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+// BUSCO EL PUNTERO DEL PATH EN EL ENTORNO
 int search_path(char **envp)
 {
 	char	*path = "PATH";
@@ -32,9 +33,10 @@ int search_path(char **envp)
 		}
 		i++;
 	}
-	return (-1);
+	exit(-1);
 }
 
+// CREO UN ARRAY DE STRINGS CON LAS DIRECCIONES DENTRO DEL PATH
 char **split_docs(char *path)
 {
 	char **docs;
@@ -46,6 +48,7 @@ char **split_docs(char *path)
 	return (docs);
 }
 
+// VERIFICO LA EXISTENCIA DEL COMANDO
 char *access_comm(char *comm, char**docs)
 {
 	char *tmp;
@@ -64,20 +67,73 @@ char *access_comm(char *comm, char**docs)
 	return (0);
 }
 
-int exec_comm(char *comm, char **file, char **envp)
+// ARREGLAMOS EL ARRAY DE ARGUMENTOS SI HAY FLAGS
+char	**modify_file(char *comm, char **file, int size)
 {
-	int env;
-	char **docs;
+	char **src;
+	
+	src = (char **)malloc(sizeof(char *) * 4);
+	src[0] = modify_comm(comm, size);
+	src[1] = ft_substr(comm, size + 1, ft_strlen(comm) - size);
+	src[2] = file[1];
+	src[3] = NULL;
+	free(file);
+	return (src);
+}
 
-//	printf("comm = %s file = %s\n", comm, file[1]);// BORRAR !!!
+// ARREGLAMOS LA STRING DEL COMANDO SI HAY FLAGS
+char	*modify_comm(char *comm, int size)
+{
+	char	*new;
+	int		i;
+
+	new = malloc(sizeof(char) * size + 1);
+	i = 0;
+	while (i < size)
+	{
+		new[i] = comm[i];
+		i++;
+	}
+	new[i] = '\0';
+//	printf("new comm = %s\n", new);// BORRAR !!!
+	return (new);
+}
+
+char	*make_comm(char *comm, char **envp)
+{
+    int env;
+    char **docs;
+	char *cmd;
+
 	env = search_path(envp);
 	docs = split_docs(envp[env]);
-//	char **file = &argv[2];
+	cmd = access_comm(comm, docs);
+	free(docs);
+	return (cmd);
+}
+
+int exec_comm(char *comm, char **file, char **envp)
+{
+//    int env;
+//    char **docs;
+	int i = 0;
+
+	while (comm[i] && (!(comm[i] == ' ' && comm[i + 1] == '-')))
+		i++;
+	if (comm[i] == ' ' && comm[i + 1] == '-')
+	{
+		file = modify_file(comm, file, i);
+		comm = modify_comm(comm, i);
+	}
+/*	env = search_path(envp);
+	docs = split_docs(envp[env]);
 	char *cmd = access_comm(comm, docs);
 	free(docs);
-	execve(cmd, file, envp);
-	return (0);
+*/	char *cmd = make_comm(comm, envp);
+//	printf("cmd = %s, file0 = \"%s\", file1 = \"%s\", file2 = \"%s\"\n", cmd, file[0], file[1], file[2]);
+	return (execve(cmd, file, envp));
 }
+
 /*
 int main(int argc, char **argv, char **envp)
 {
@@ -88,13 +144,5 @@ int main(int argc, char **argv, char **envp)
 //		printf("argv[%d] = %s, ", i, argv[i]);
 	exec_comm(argc, argv, envp);
 	return (0);
-}*/
-/*
-int main(int argc, char **argv, char **envp)
-{
-	if (argc < 2 || !argv || !envp)
-		return (0);
-	char *cmd = "/bin/echo";
-	execve(cmd, argv, envp);
-	return 0;
-}*/
+}
+*/
