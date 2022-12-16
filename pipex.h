@@ -33,11 +33,18 @@ char    *modify_comm(char *comm, int size);
 
 int		exec_comm(char *comm, char **file, char **envp);
 
-char    **makesrc(char *file, char *zero);
+char    **makesrc(char **argv);
+
+char    **make_commands(int argc, char **argv);
 
 void	fzero(int fd);
 
-//int		pipex(char *comm, char **file, char **envp, int fd);
-int		pipex(char *comm, char **file, char **envp, char *dst);
+void    child(int a[], int b[], char *comm, char **src, char **envp);
+
+void    father(int a[], int b[], char *dst, int n);
+//void    father(int a[], int b[], char *dst);
+
+int		pipex(char *comm, char **file, char **envp, char *dst, int n);
+//int		pipex(char *comm, char **file, char **envp, char *dst);
 
 #endif

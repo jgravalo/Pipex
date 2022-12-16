@@ -1,38 +1,33 @@
-NAME =		pipex.a
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jgravalo <jgravalo@student.42barcel>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/02/08 11:34:02 by jgravalo          #+#    #+#              #
+#    Updated: 2022/12/16 16:12:20 by jgravalo         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-FILES_C =	pipex.c command.c utils.c
-
-OBJS =		$(FILES_C:.c=.o)
-
-#DEPS =		$(OBJS:.o=.d)
-
-CC =		gcc
-
-CFLAGS =	-Wall -Werror -Wextra -MMD -MP
-
-RM =		rm -rf
-
-MAKEFILE =	Makefile
-
-all:
-	@$(MAKE) $(NAME)
-
-$(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
-
-%.o: %.c $(MAKEFILE)
-	@echo "COMPILAD: $(CC) $(CFLAGS) $< -o $@"
-	$(CC) -c $(CFLAGS) $< -o $@
-
-clean:
-	$(RM) $(OBJS) #$(DEPS)
-
-fclean:
-	$(MAKE) clean
-re:
-	$(MAKE) fclean
-	$(MAKE) all
-
-#include $(DEPS)
-
-.PHONY: all clean fclean re
+SRCS            = main.c pipex.c command.c utils.c
+BONUS_SRCS		= main_bonus.c pipex.c command.c utils.c
+OBJS            = $(SRCS:.c=.o)
+BONUS_OBJS		= $(BONUS_SRCS:.c=.o)
+CC              = gcc
+RM              = rm -f
+CFLAGS          = -Wall -Wextra -Werror
+NAME			= pipex.a
+all:            $(NAME)
+$(NAME):        $(OBJS)
+				ar rcs $(NAME) $(OBJS)
+				ranlib ${NAME}
+bonus:			$(OBJS) $(BONUS_OBJS)
+				ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
+				ranlib ${NAME}
+clean:			
+				$(RM) $(OBJS) $(BONUS_OBJS)
+fclean:			clean
+				$(RM) $(NAME)
+re:             fclean $(NAME)
+.PHONY:			all bonus clean fclean re

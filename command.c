@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:14:07 by jgravalo          #+#    #+#             */
-/*   Updated: 2022/12/15 16:47:49 by jgravalo         ###   ########.fr       */
+/*   Updated: 2022/12/16 15:47:40 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 // BUSCO EL PUNTERO DEL PATH EN EL ENTORNO
 int search_path(char **envp)
 {
-	char	*path = "PATH";
+	char	*path;
 	int		i;
 	int		j;
 
 	i = 0;
+	path = "PATH";
 	while (envp[i])
 	{
 		j = 0;
@@ -114,9 +115,8 @@ char	*make_comm(char *comm, char **envp)
 
 int exec_comm(char *comm, char **file, char **envp)
 {
-//    int env;
-//    char **docs;
 	int i = 0;
+	char *cmd;
 
 	while (comm[i] && (!(comm[i] == ' ' && comm[i + 1] == '-')))
 		i++;
@@ -125,12 +125,8 @@ int exec_comm(char *comm, char **file, char **envp)
 		file = modify_file(comm, file, i);
 		comm = modify_comm(comm, i);
 	}
-/*	env = search_path(envp);
-	docs = split_docs(envp[env]);
-	char *cmd = access_comm(comm, docs);
-	free(docs);
-*/	char *cmd = make_comm(comm, envp);
-//	printf("cmd = %s, file0 = \"%s\", file1 = \"%s\", file2 = \"%s\"\n", cmd, file[0], file[1], file[2]);
+	cmd = make_comm(comm, envp);
+	printf("cmd = %s, file0 = \"%s\", file1 = \"%s\", file2 = \"%s\"\n", cmd, file[0], file[1], file[2]);
 	return (execve(cmd, file, envp));
 }
 
