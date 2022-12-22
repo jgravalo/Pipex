@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:13:06 by jgravalo          #+#    #+#             */
-/*   Updated: 2022/12/16 15:05:27 by jgravalo         ###   ########.fr       */
+/*   Updated: 2022/12/22 18:59:51 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int pipex(char *comm, char **src, char **envp, char *dst, int n)
 	pid = fork();
 	if (pid == 0)
 	{ // hijo
-		child(a, b, comm, src, envp);
+		child(a, b, comm, src, envp, n);
+//		child(a, b, comm, src, envp);
 	}
 	else
 	{ // padre
@@ -36,7 +37,10 @@ int pipex(char *comm, char **src, char **envp, char *dst, int n)
 	return (0);
 }
 
-void	child(int a[], int b[], char *comm, char **src, char **envp)
+
+
+void	child(int a[], int b[], char *comm, char **src, char **envp, int n)
+//void	child(int a[], int b[], char *comm, char **src, char **envp)
 {
 	int exec;
 
@@ -48,7 +52,7 @@ void	child(int a[], int b[], char *comm, char **src, char **envp)
 //	dup2(b[1], 2);
 	close(b[1]);
 //	unlink(src[1]);
-	exec = exec_comm(comm, src, envp);
+	exec = exec_comm(comm, src, envp, n);
 	if (exec == -1)
 		write(1, "exec=error\n", 11);
 }

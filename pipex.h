@@ -27,11 +27,11 @@ char	**split_docs(char *path);
 
 char	*access_comm(char *comm, char **docs);
 
-char    **modify_file(char *comm, char **file, int size);
+char    **modify_file(char *comm, char **file, int size, int n);
+//char    **modify_file(char *comm, char **file, int size);
 
-char    *modify_comm(char *comm, int size);
-
-int		exec_comm(char *comm, char **file, char **envp);
+int		exec_comm(char *comm, char **file, char **envp, int n);
+//int		exec_comm(char *comm, char **file, char **envp);
 
 char    **makesrc(char **argv);
 
@@ -39,7 +39,8 @@ char    **make_commands(int argc, char **argv);
 
 void	fzero(int fd);
 
-void    child(int a[], int b[], char *comm, char **src, char **envp);
+void    child(int a[], int b[], char *comm, char **src, char **envp, int n);
+//void    child(int a[], int b[], char *comm, char **src, char **envp);
 
 void    father(int a[], int b[], char *dst, int n);
 //void    father(int a[], int b[], char *dst);
