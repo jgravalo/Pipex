@@ -36,9 +36,7 @@ char	**split_docs(char *path);
 char	*access_cmd(char *comm, char **docs);
 
 char    *file_cmd(char *cmd, char **envp);
-
-
-
+/*
 char    **modify_file(char *comm, char **file, int size, int n);
 
 int		exec_comm(char *comm, char **file, char **envp, int n);
@@ -56,5 +54,5 @@ void    child2(int a[], int b[], char *comm, char **src, char **envp, int n);
 void    father(int a[], int b[], char *dst, int n);
 
 int		pipex(char **comm, char **file, char **envp, char *dst, int n);
-
+*/
 #endif

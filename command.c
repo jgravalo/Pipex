@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:14:07 by jgravalo          #+#    #+#             */
-/*   Updated: 2022/12/22 21:35:33 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/02/13 13:27:33 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,19 @@ char *access_comm(char *comm, char**docs)
 	return (0);
 }
 
+char	*make_comm(char *comm, char **envp)
+{
+    int env;
+    char **docs;
+	char *cmd;
+
+	env = search_path(envp);
+	docs = split_docs(envp[env]);
+	cmd = access_comm(comm, docs);
+	free(docs);
+	return (cmd);
+}
+
 // ARREGLAMOS EL ARRAY DE ARGUMENTOS SI HAY FLAGS
 char	**modify_file(char *comm, char **file, int size, int n)
 //char	**modify_file(char *comm, char **file, int size)
@@ -86,19 +99,6 @@ char	**modify_file(char *comm, char **file, int size, int n)
 	src[++j] = NULL;
 	free(file);
 	return (src);
-}
-
-char	*make_comm(char *comm, char **envp)
-{
-    int env;
-    char **docs;
-	char *cmd;
-
-	env = search_path(envp);
-	docs = split_docs(envp[env]);
-	cmd = access_comm(comm, docs);
-	free(docs);
-	return (cmd);
 }
 
 int exec_comm(char *comm, char **file, char **envp, int n)

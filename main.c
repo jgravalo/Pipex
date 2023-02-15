@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:13:06 by jgravalo          #+#    #+#             */
-/*   Updated: 2022/12/16 16:57:08 by jgravalo         ###   ########.fr       */
+/*   Updated: 2022/12/22 22:14:30 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int main(int argc, char **argv, char **envp)
 	dst = argv[argc - 1];
 	i = 1;
 
+	pipex(command, src, envp, dst, i);
+	/*
 	for (i = 1; i < 3; i++)
 	{
 		printf("\nPROCESO \"%d\" \n", i);
@@ -45,6 +47,7 @@ int main(int argc, char **argv, char **envp)
 //		pipex(command[i], src, envp, dst);
 		src[1] = dst; 
 	}
+	*/
 
 	/*
 	//int fd = 
