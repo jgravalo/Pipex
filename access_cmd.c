@@ -22,7 +22,8 @@ int search_path(char **envp)
         }
         i++;
     }
-    exit(-1);
+	free(path);
+	return (0);
 }
 
 // CREO UN ARRAY DE STRINGS CON LAS DIRECCIONES DENTRO DEL PATH
@@ -53,7 +54,7 @@ char *access_cmd(char *cmd, char**docs)
             return (docs[i]);
         i++;
     }
-    exit(-1);
+    return (0);
 }
 
 char    *file_cmd(char *cmd, char **envp)

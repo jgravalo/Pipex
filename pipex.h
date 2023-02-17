@@ -17,6 +17,7 @@ typedef struct s_pipex{
 	int		fdout;
 	int		tube[2];
 	char	*cmd;
+	char	**args;
 } t_pipex;
 
 size_t	ft_strlen(const char *str);
@@ -37,7 +38,13 @@ char	*access_cmd(char *comm, char **docs);
 
 char    *file_cmd(char *cmd, char **envp);
 
+void    child(t_pipex *pipex, char **argv, char **envp, int src, int dst, int n);
 
+void    child1(t_pipex *pipex, char **argv, char **envp);
+
+void    child2(t_pipex *pipex, char **argv, char **envp);
+
+/*
 
 char    **modify_file(char *comm, char **file, int size, int n);
 
@@ -56,5 +63,7 @@ void    child2(int a[], int b[], char *comm, char **src, char **envp, int n);
 void    father(int a[], int b[], char *dst, int n);
 
 int		pipex(char **comm, char **file, char **envp, char *dst, int n);
+
+*/
 
 #endif

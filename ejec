@@ -1,2 +1,0 @@
-#!bin/bash
-gcc -Wall -Werror -Wextra prueba1.c && ./a.out file1 command1 command2 command3 file2

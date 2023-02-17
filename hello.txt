@@ -1,3 +1,0 @@
--rw-r--r--  1 jgravalo  2021_barcelona  841 Nov 22 15:10 prueba1.c
--rw-r--r--  1 jgravalo  2021_barcelona  841 Nov 22 15:10 prueba1.c
-       2 hello.txt
