@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 13:29:05 by jgravalo          #+#    #+#             */
-/*   Updated: 2022/12/06 15:34:29 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/03/23 12:42:39 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,33 +51,33 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (s2);
 }
 
-static int  words(const char *s, char c)
+static int	words(const char *s, char c)
 {
-    int j;
+	int	j;
 
-    j = 0;
-    while (*s)
-    {
-        if (*s != c)
-        {
-            while (*s && *s != c)
-            {
-                s++;
-            }
-            j++;
-        }
-        else
-            ++s;
-    }
-    return (j);
+	j = 0;
+	while (*s)
+	{
+		if (*s != c)
+		{
+			while (*s && *s != c)
+			{
+				s++;
+			}
+			j++;
+		}
+		else
+			++s;
+	}
+	return (j);
 }
 
-char    **ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	int     i;
-	int     size;
-	int     j;
-	char    **res;
+	int		i;
+	int		size;
+	int		j;
+	char	**res;
 
 	i = 0;
 	size = 0;
@@ -103,9 +103,9 @@ char    **ft_split(char const *s, char c)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char *new;
-	int i;
-	int j;
+	char	*new;
+	int		i;
+	int		j;
 
 	new = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	i = 0;

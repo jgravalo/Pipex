@@ -1,0 +1,4 @@
+echo "expected :"
+< src/pipex.c wc -w | cat > output && cat output
+echo "me :"
+./pipex src/pipex.c "wc -w" "cat" output && cat output

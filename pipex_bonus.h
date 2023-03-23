@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 17:24:32 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/03/23 15:10:52 by jgravalo         ###   ########.fr       */
+/*   Created: 2023/02/21 17:25:44 by jgravalo          #+#    #+#             */
+/*   Updated: 2023/02/21 17:27:37 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include <sys/types.h>
 # include <fcntl.h>
@@ -49,15 +49,17 @@ char	*access_cmd(char *comm, char **docs);
 
 char	*file_cmd(char *cmd, char **envp);
 
+void	childn(t_pipex *pipex, char **argv, char **envp, int i);
+
 void	child1(t_pipex *pipex, char **argv, char **envp);
 
-void	child2(t_pipex *pipex, char **argv, char **envp);
+void	child2(t_pipex *pipex, int argc, char **argv, char **envp, int n);
 
 char	**make_args(char *cmd);
 
 char	**make_args_file(char **argv, char *file);
 
-int		cmd_error(char *str);
+int		file_error(char *str);
 
 int		arg_error(char *s, int n);
 
