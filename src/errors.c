@@ -1,62 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   make_pipex.c                                       :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:56:43 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/03/23 15:14:56 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/13 16:44:32 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../inc/pipex.h"
 
-char	**make_args(char *cmd)
+int	errors(t_pipex *pipex, int argc, char **argv)
 {
-	char	**args;
-
-	args = ft_split(cmd, ' ');
-	return (args);
-}
-
-char	**make_args_file(char **argv, char *file)
-{
-	char	**args;
-	int		i;
+	int i;
 
 	i = 0;
-	while (argv[i])
-		i++;
-	args = malloc(((i + 1) * sizeof(char *)) + 8);
-	i = 0;
-	while (argv[i])
-	{
-		args[i] = argv[i];
-		i++;
-	}
-	args[i] = file;
-	args[i + 1] = NULL;
-	return (args);
+	pipex->fdin = open(argv[1], O_RDONLY);
+	pipex->fdout = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 00644);
+	return (i);
 }
 
 int	cmd_error(char *str)
 {
-	write(2, "zsh: command not found: ", 24);
+	write(2, "pipex: ", 7);
 	write(2, str, ft_strlen(str));
-
-//    exit(0);
-	return (0);
+	write(2, ": command not found\n", 20);
+	exit(-1);
+//	return (-1);
 }
 
-int	arg_error(char *s, int n)
+int	file_error(char *s, int n)
 {
 	char	*str;
 
-	str = ft_strjoin(s,": ");
+	str = ft_strjoin(s, ": ");
 	str = ft_strjoin(str, strerror(n));
+	write(2, "pipex: ", 7);
 	write(2, str, ft_strlen(str));
-//	exit(0);
+//	exit(-1);
 	return (0);
 }
 

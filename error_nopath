@@ -1,0 +1,29 @@
+unset PATH
+echo "1: < src/pipex.c grep Hello | wc -l > output (No environment)"
+echo
+echo "Expected:"
+< src/pipex.c grep Hello | wc -l > output && cat output
+echo
+echo "Me:"
+./pipex src/pipex.c "grep Hello" "wc -l" output && cat output
+echo
+echo
+
+echo "2: < src/pipex.c fizzBuzz | wc -l > output (No environment)"
+echo
+echo "Expected:"
+< src/pipex.c fizzBuzz | wc -l > output && cat output
+echo
+echo "Me:"
+./pipex src/pipex.c fizzBuzz "wc -l" output && cat output
+echo
+echo
+
+echo "3: < src/pipex.c grep Hello | buzzFizz > output (No environment)"
+echo
+echo "Expected:"
+< src/pipex.c grep Hello | buzzFizz > output && cat output 
+echo
+echo "Me:"
+./pipex src/pipex.c "grep Hello" buzzFizz output && cat output 
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki"

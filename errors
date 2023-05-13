@@ -1,0 +1,33 @@
+echo "1:    ./pipex infile.txt 'sed "s/And/But/"' 'awk "{count++} END {printf \"count: %i\" , count}"' outfile.txt" && cat outfile.txt
+echo "expected:"
+< infile.txt 'sed "s/And/But/"' 'awk "{count++} END {printf \"count: %i\" , count}"' > outfile.txt && cat outfile.txt
+echo "Me:"
+./pipex infile.txt 'sed "s/And/But/"' 'awk "{count++} END {printf \"count: %i\" , count}"' outfile.txt && cat outfile.txt
+
+echo
+echo "./pipex infile.txt './script space.sh' wc outfile.txt"
+echo "expected:"
+< infile.txt './script space.sh' wc > outfile.txt && cat outfile.txt
+echo "Me:"
+./pipex infile.txt './script space.sh' wc outfile.txt && cat outfile.txt
+
+echo
+echo "./pipex infile.txt './script\"quote.sh' wc outfile.txt"
+echo "expected:"
+< infile.txt './script\"quote.sh' wc > outfile.txt && cat outfile.txt
+echo "Me:"
+./pipex infile.txt './script\"quote.sh' wc outfile.txt && cat outfile.txt
+
+echo
+echo "./pipex infile.txt ./no_x_script.sh wc outfile.txt"
+echo "expected:"
+< infile.txt ./no_x_script.sh wc > outfile.txt && cat outfile.txt
+echo "Me:"
+./pipex infile.txt ./no_x_script.sh wc outfile.txt && cat outfile.txt
+
+echo
+echo "./pipex infile.txt ./script.sh ./script.sh outfile.txt"
+echo "expected:"
+< infile.txt ./script.sh ./script.sh > outfile.txt && cat outfile.txt
+echo "Me:"
+./pipex infile.txt ./script.sh ./script.sh outfile.txt && cat outfile.txt

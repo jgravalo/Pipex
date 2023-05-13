@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:03:32 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/03/23 17:33:05 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/04/11 17:05:38 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
 
-	if (argc < 2)
-//		arg_error("Error: ", 5);
+	if (argc < 5)
 		return (0);
 	errors(&pipex, argc, argv);
 	if (pipe(pipex.tube) < 0)
@@ -65,6 +64,23 @@ void	child1(t_pipex *pipex, char **argv, char **envp)
 	dup2(pipex->tube[1], 1);
 	dup2(pipex->fdin, 0);
 	close(pipex->tube[1]);
+	execve(pipex->cmd, pipex->args, envp);
+}
+
+void	child2(t_pipex *pipex, char **argv, char **envp)
+{
+	close(pipex->tube[1]);
+	pipex->args = make_args(argv[3]);
+	pipex->cmd = file_cmd(pipex->args[0], envp);
+	if (!pipex->cmd)
+	{
+		arg_error(pipex->args[0], 3);
+		free_child(pipex);
+		exit(-1);
+	}
+	dup2(pipex->tube[0], 0);
+	dup2(pipex->fdout, 1);
+	close(pipex->tube[0]);
 	execve(pipex->cmd, pipex->args, envp);
 }
 

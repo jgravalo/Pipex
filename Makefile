@@ -1,4 +1,4 @@
-SRCS	= pipex.c make_pipex.c access_cmd.c utils.c
+SRCS	= src/pipex.c src/make_pipex.c src/utils.c src/access_cmd.c src/errors.c
 
 OBJS	= $(SRCS:.c=.o)
 
@@ -6,29 +6,14 @@ CC		= gcc
 
 CFLAGS	= -Wall -Werror -Wextra
 
-RM		= rm -f
+RM		= rm -rf
 
 NAME	= pipex
 
-COMM1	= cat
-
-COMM2	= hostname
-
-INPUT	= pipex.c
-
-OUTPUT	= output
-
-all		= $(NAME)
+all:	$(NAME)
 
 $(NAME) : $(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-
-#wall:	$(INPUT) $(COMM1) $(COMM2) $(OUTPUT)
-#		echo "Expected:"
-#		$(MAKE) < $(INPUT) $(COMM1) | $(COMM2) > $(OUTPUT)
-#		echo "Me:"
-#		$(MAKE) $(NAME) $(INPUT) $(COMM1) $(COMM2) $(OUTPUT)
-
 clean:
 		$(RM) $(OBJS)
 fclean:	clean

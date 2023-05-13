@@ -1,0 +1,13 @@
+echo "Expected:"
+< src/pipex.c cat | uname > outfile.txt && outfile.txt
+echo
+echo "Me:"
+./pipex src/pipex.c cat uname outfile.txt && outfile.txt
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jgravalo/francinette/tests/pipex/fsoares"
+echo
+echo "Expected:"
+< src/pipex.c cat | uname > outfile.txt && outfile.txt
+echo
+echo "Me:"
+./pipex src/pipex.c cat uname outfile.txt && outfile.txt
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki"

@@ -6,11 +6,11 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:09:57 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/03/23 16:25:03 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/13 15:36:22 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../inc/pipex.h"
 
 // BUSCO EL PUNTERO DEL PATH EN EL ENTORNO
 int	search_path(char **envp)
@@ -25,17 +25,13 @@ int	search_path(char **envp)
 	{
 		j = 0;
 		while (path[j] && envp[i][j] == path[j])
-		{
 			j++;
-		}
 		if (!path[j])
-		{
 			return (i);
-		}
 		i++;
 	}
 	free(path);
-	return (0);
+	return (-1);
 }
 
 // CREO UN ARRAY DE STRINGS CON LAS DIRECCIONES DENTRO DEL PATH
@@ -51,12 +47,14 @@ char	**split_docs(char *path)
 }
 
 // VERIFICO LA EXISTENCIA DEL COMANDO
-char	*access_cmd(char *cmd, char**docs)
+char	*access_cmd(char *cmd, char**docs)//, int env)
 {
 	char	*tmp;
 	int		i;
 
 	i = 0;
+	if (!docs || access(cmd, 0) != -1)
+		return (cmd);
 	while (docs[i])
 	{
 		tmp = ft_strjoin(docs[i], "/");
@@ -67,7 +65,8 @@ char	*access_cmd(char *cmd, char**docs)
 		i++;
 	}
 	cmd_error(cmd);
-	exit(-1);
+//	exit(-1);
+	return (0);
 }
 
 char	*file_cmd(char *cmd, char **envp)
@@ -75,10 +74,22 @@ char	*file_cmd(char *cmd, char **envp)
 	int		env;
 	char	**docs;
 	char	*file;
-
-	env = search_path(envp);
+	
+	env = 0;
+	if (!(cmd[0] == '.' && cmd[1] == '/'))
+		env = search_path(envp);
+/*
+	write(2, "envp[0] = |", 10);
+	write(2, envp[0], ft_strlen(envp[0]));
+	write(2, "|\n", 2);
+*/
+//	if (env == -1)
+//		return (cmd);
+//	if (env > 0)
+//	{
 	docs = split_docs(envp[env]);
-	file = access_cmd(cmd, docs);
+	file = access_cmd(cmd, docs);//, env);
+//	}
 	free(docs);
 	return (file);
 }

@@ -1,4 +1,5 @@
 echo "expected :"
-< src/pipex.c wc -w | cat > output && cat output
+< src/pipex.c cat | awk '{count++} END {print count}' > output && cat output
+
 echo "me :"
-./pipex src/pipex.c "wc -w" "cat" output && cat output
+./pipex src/pipex.c cat "awk '{count++} END {print count}'" output && cat output
