@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:09:57 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/13 15:36:22 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:18:48 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,25 @@ char	**split_docs(char *path)
 }
 
 // VERIFICO LA EXISTENCIA DEL COMANDO
+int		is_local(char *cmd)
+{
+	int	i;
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '/' && cmd[i - 1] != '.')
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
 char	*access_cmd(char *cmd, char**docs)//, int env)
 {
 	char	*tmp;
 	int		i;
 
 	i = 0;
-	if (!docs || access(cmd, 0) != -1)
-		return (cmd);
 	while (docs[i])
 	{
 		tmp = ft_strjoin(docs[i], "/");
@@ -64,9 +75,16 @@ char	*access_cmd(char *cmd, char**docs)//, int env)
 			return (docs[i]);
 		i++;
 	}
+	if (is_local(cmd) == 0 && !(cmd[0] == '.' && cmd[1] == '/'))
+	{
+		cmd_error(cmd);
+		exit(-1);
+	}
+	if (access(cmd, 0) != -1 && access(cmd, X_OK) != -1)
+		return (cmd);
 	cmd_error(cmd);
-//	exit(-1);
-	return (0);
+	exit(-1);
+//	return (0);
 }
 
 char	*file_cmd(char *cmd, char **envp)

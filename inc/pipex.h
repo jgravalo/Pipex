@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:24:32 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/13 16:44:50 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/13 17:53:21 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ int		child2(t_pipex *pipex, char **argv, char **envp);
 
 char	**make_args(char *cmd);
 
-char	**check_simbols(char **args, char c);
+void    check_marks(char **argv);
+
+//char	**check_simbols(char **args, char c);
 
 char	**make_args_file(char **argv, char *file);
 

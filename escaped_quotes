@@ -1,11 +1,11 @@
-./pipex infile.txt 'sed "s/And/But/"' 'awk "{count++} END {printf \"count: %i\" , count}"' outfile.txt
+echo 1
 
+./pipex src/make_pipex.c 'sed "s/new/str/"' 'awk "{count++} END {printf \"count: %i\" , count}"' outfile
+cat outfile
 
+echo
 
-cat outfile.txt
+echo 2 
 
 ./pipex infile.txt './script\"quote.sh' wc outfile.txt
-
-
-
 cat outfile.txt

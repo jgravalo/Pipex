@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:56:43 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/13 16:44:32 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/15 14:12:09 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	cmd_error(char *str)
 	write(2, "pipex: ", 7);
 	write(2, str, ft_strlen(str));
 	write(2, ": command not found\n", 20);
-	exit(-1);
-//	return (-1);
+//	exit(-1);
+	return (-1);
 }
 
 int	file_error(char *s, int n)
