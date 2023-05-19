@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:09:57 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/15 16:18:48 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:29:07 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,15 @@ char	*access_cmd(char *cmd, char**docs)//, int env)
 	if (access(cmd, 0) != -1 && access(cmd, X_OK) != -1)
 		return (cmd);
 	cmd_error(cmd);
-	exit(-1);
+	exit(-2);
 //	return (0);
 }
 
 char	*file_cmd(char *cmd, char **envp)
 {
 	int		env;
-	char	**docs;
 	char	*file;
+	char	**docs;
 	
 	env = 0;
 	if (!(cmd[0] == '.' && cmd[1] == '/'))

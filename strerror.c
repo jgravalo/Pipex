@@ -1,4 +1,4 @@
-#include"pipex.h"
+#include"inc/pipex.h"
 
 int main()
 {

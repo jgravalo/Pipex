@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:56:43 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/15 16:16:22 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:09:49 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ char	**make_args_file(char **argv, char *file)
 	int		i;
 
 	i = 0;
-//	if (access(file, 0) == -1)
-//		exit (-1);
+	if (access(file, 0) == -1)
+	{
+		file_error(file, 2);
+		exit (-1);
+	}
 	while (file[i])
 	{
 		if ((file[i] == '/' && file[i - 1] != '.')

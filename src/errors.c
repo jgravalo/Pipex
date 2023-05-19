@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:56:43 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/15 14:12:09 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:53:43 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	file_error(char *s, int n)
 	str = ft_strjoin(str, strerror(n));
 	write(2, "pipex: ", 7);
 	write(2, str, ft_strlen(str));
+	write(2, "\n", 1);
 //	exit(-1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:03:32 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/15 14:51:14 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:27:56 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
 	int i;
+	int exit;
 
 	//
 //	int i; for (i = 0; argv[i]; i++) printf("argv[%d] = |%s|\n", i, argv[i]);
 	//
 	i = 0;
+	exit = 0;
 	if (argc < 5)
 		return (1);
 	i = errors(&pipex, argc, argv);
@@ -36,8 +38,15 @@ int	main(int argc, char **argv, char **envp)
 			i = 127;
 	close(pipex.tube[0]);
 	close(pipex.tube[1]);
-	wait(NULL);
-	return (i);
+//	wait(NULL);
+	waitpid(pipex.pid1, NULL, 0);
+//	waitpid(pipex.pid2, NULL, 0);
+	waitpid(pipex.pid2, &exit, 0);
+//	wait(&i);
+	exit = WEXITSTATUS(exit);
+	if (exit >= 128/* && exit != 127*/)
+		exit -= 128;
+	return(exit);
 }
 
 int	child1(t_pipex *pipex, char **argv, char **envp)
