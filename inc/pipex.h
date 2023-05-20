@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:24:32 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/13 17:53:21 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/20 14:33:48 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "pipex.h"
 
 # define SIZE 512
+# define PATH "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 typedef struct s_pipex{
 	int		fdin;
@@ -36,6 +37,8 @@ typedef struct s_pipex{
 size_t	ft_strlen(const char *str);
 
 int		ft_strcmp(char *s1, char *s2);
+
+char	*ft_strdup(char *str);
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 

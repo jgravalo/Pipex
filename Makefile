@@ -1,4 +1,4 @@
-SRCS	= src/pipex.c src/make_pipex.c src/utils.c src/access_cmd.c src/errors.c
+SRCS	= src/pipex.c src/make_pipex.c src/utils.c src/ft_split_marks.c src/access_cmd.c src/errors.c
 
 OBJS	= $(SRCS:.c=.o)
 

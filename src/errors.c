@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:56:43 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/19 14:53:43 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/20 16:41:39 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 int	errors(t_pipex *pipex, int argc, char **argv)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	pipex->fdin = open(argv[1], O_RDONLY);
+	if (access(argv[argc - 1], F_OK) != -1
+		&& access(argv[argc - 1], W_OK) == -1)
+		exit(1);
 	pipex->fdout = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 00644);
+	pipex->fdin = open(argv[1], O_RDONLY);
 	return (i);
 }
 
@@ -27,7 +30,6 @@ int	cmd_error(char *str)
 	write(2, "pipex: ", 7);
 	write(2, str, ft_strlen(str));
 	write(2, ": command not found\n", 20);
-//	exit(-1);
 	return (-1);
 }
 
@@ -40,7 +42,6 @@ int	file_error(char *s, int n)
 	write(2, "pipex: ", 7);
 	write(2, str, ft_strlen(str));
 	write(2, "\n", 1);
-//	exit(-1);
 	return (0);
 }
 

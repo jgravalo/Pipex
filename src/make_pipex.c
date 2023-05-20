@@ -6,19 +6,33 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:56:43 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/19 15:09:49 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/20 16:44:42 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
 
-char	**make_args(char *cmd)
+int	errors_args(char **argv, char *file)
 {
-	char	**args;
+	int		i;
+	int		j;
 
-	args = ft_split(cmd, ' ');
-	check_marks(args);
-	return (args);
+	i = 0;
+	while (file[i])
+	{
+		if ((file[i] == '/' && file[i - 1] != '.')
+			|| ft_strcmp(argv[0], "sleep") == 0)
+			return (1);
+		i++;
+	}
+	i = 0;
+	while (argv[i])
+		i++;
+	j = 0;
+	while (argv[i - 1][j] && ++j)
+		if (argv[i - 1][j - 1] == '/')
+			return (1);
+	return (0);
 }
 
 char	**make_args_file(char **argv, char *file)
@@ -26,26 +40,16 @@ char	**make_args_file(char **argv, char *file)
 	char	**args;
 	int		i;
 
-	i = 0;
 	if (access(file, 0) == -1)
 	{
 		file_error(file, 2);
 		exit (-1);
 	}
-	while (file[i])
-	{
-		if ((file[i] == '/' && file[i - 1] != '.')
-			|| ft_strcmp(argv[0],"sleep") == 0)
-			return (argv);
-		i++;
-	}
+	if (errors_args(argv, file) == 1)
+		return (argv);
 	i = 0;
 	while (argv[i])
 		i++;
-	int j = 0;
-	while (argv[i - 1][j] && ++j)
-		if (argv[i - 1][j - 1] == '/')
-			return (argv);
 	args = malloc(((i + 1) * sizeof(char *)) + 8);
 	i = 0;
 	while (argv[i] && ++i)
@@ -55,7 +59,7 @@ char	**make_args_file(char **argv, char *file)
 	return (args);
 }
 
-char	*modify_mark(char *old)
+char	*new_mark(char *old)
 {
 	char	*new;
 	int		i;
@@ -63,18 +67,7 @@ char	*modify_mark(char *old)
 
 	i = 0;
 	j = 0;
-	while (old[i])
-	{
-	//	printf("aqui\n");
-		if (old[i] == '\"' && old[i - 1] == '\\')
-			j++;
-		i++;
-	}
-	if ((int)ft_strlen(old) == j)
-		return (old);
 	new = (char *)malloc(sizeof(char) * (ft_strlen(old) + 1));
-	i = 0;
-	j = 0;
 	while (old[i])
 	{
 		if (old[i] == '\\' && old[i + 1] == '\"')
@@ -87,8 +80,25 @@ char	*modify_mark(char *old)
 		i++;
 		j++;
 	}
-//	free(old);
 	return (new);
+}
+
+char	*modify_mark(char *old)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (old[i])
+	{
+		if (old[i] == '\"' && old[i - 1] == '\\')
+			j++;
+		i++;
+	}
+	if ((int)ft_strlen(old) == j)
+		return (old);
+	return (new_mark(old));
 }
 
 void	check_marks(char **argv)
