@@ -1,7 +1,0 @@
-echo "6: ./pipex pipex.c './pipex\"quote.sh' wc outfile.txt"
-echo
-echo "expected:"
-< src/pipex.c './pipex\"quote.sh' | wc > outfile.txt
-echo
-echo "Me:"
-./pipex src/pipex.c './pipex\"quote.sh' wc outfile.txt

@@ -1,5 +1,0 @@
-echo "expected :"
-< src/pipex.c cat | awk '{count++} END {print count}' > output && cat output
-
-echo "me :"
-./pipex src/pipex.c cat "awk '{count++} END {print count}'" output && cat output

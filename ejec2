@@ -1,5 +1,0 @@
-echo "expected :"
-< input grep Hello | wc -l > output && cat output
-
-echo "me :"
-./pipex pipex.c "grep Hello" "wc -l" output && cat output
