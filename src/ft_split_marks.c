@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 13:29:05 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/20 17:14:38 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:36:09 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,23 +85,26 @@ const char	*ft_split_marks(char const *s, char c, int *j, char **res)
 
 	tmp = 0;
 	i = 0;
-	if (*s == '\"' && *(s - 1) != '\\' && ++s && ++tmp)
+	if (*s != c)
 	{
-		res[*j++] = mark_str(s, '\"', &i);
-		s += i + 1;
-	}
-	else if (*s == '\'' && *(s - 1) != '\\' && ++s && ++tmp)
-	{
-		res[*j++] = mark_str(s, '\'', &i);
-		s += i + 1;
-	}
-	else
-		while (*s && *s != c && ++i)
-			s++;
-	if (tmp == 0)
-	{
-		res[*j++] = ft_substr(s - i, 0, i);
-//		return (i);
+		if (*s == '\"' && *(s - 1) != '\\' && ++s && ++tmp)
+		{
+			res[*j++] = mark_str(s, '\"', &i);
+			s += i + 1;
+		}
+		else if (*s == '\'' && *(s - 1) != '\\' && ++s && ++tmp)
+		{
+			res[*j++] = mark_str(s, '\'', &i);
+			s += i + 1;
+		}
+		else
+			while (*s && *s != c && ++i)
+				s++;
+		if (tmp == 0)
+		{
+			res[*j++] = ft_substr(s - i, 0, i);
+//			return (i);
+		}
 	}
 //	return (i + 1);
 	return (s);
@@ -111,8 +114,8 @@ char	**ft_split(char const *s, char c)
 {
 	char	**res;
 	int		j;
-//	int		i;
-//	int		tmp;
+	int		i;
+	int		tmp;
 
 	j = 0;
 	res = (char **) malloc((words(s, c) * (sizeof(char *))) + 8);
@@ -120,10 +123,10 @@ char	**ft_split(char const *s, char c)
 		return (0);
 	while (*s)
 	{
+//		s = ft_split_marks(s, c, &j, res) + 1;
+		//
 		if (*s != c)
 		{
-			s = ft_split_marks(s, c, &j, res) + 1;
-			/*
 			tmp = 0;
 			i = 0;
 			if (*s == '\"' && *(s - 1) != '\\' && ++s && ++tmp)
@@ -140,8 +143,8 @@ char	**ft_split(char const *s, char c)
 				s++;
 			if (tmp == 0)
 				res[j++] = ft_substr(s - i, 0, i);
-			*/
 		}
+		//
 		else
 			++s;
 	}

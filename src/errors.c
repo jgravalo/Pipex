@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:56:43 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/20 16:41:39 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:12:28 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	errors(t_pipex *pipex, int argc, char **argv)
 		&& access(argv[argc - 1], W_OK) == -1)
 		exit(1);
 	pipex->fdout = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 00644);
+	if (pipex->fdout == -1)
+		exit(127);
 	pipex->fdin = open(argv[1], O_RDONLY);
 	return (i);
 }

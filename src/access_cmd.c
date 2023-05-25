@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:09:57 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/20 14:58:20 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:23:26 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	is_local(char *cmd)
 	return (0);
 }
 
-char	*access_cmd(char *cmd, char**docs)
+char	*access_cmd(char *cmd, char**docs, int env)
 {
 	char	*tmp;
 	int		i;
@@ -72,6 +72,8 @@ char	*access_cmd(char *cmd, char**docs)
 			return (docs[i]);
 		i++;
 	}
+	if (env == -1 && access(cmd, F_OK) == 0)
+		return (cmd);
 	if (is_local(cmd) == 0 && !(cmd[0] == '.' && cmd[1] == '/'))
 	{
 		cmd_error(cmd);
@@ -89,16 +91,14 @@ char	*file_cmd(char *cmd, char **envp)
 	char	*file;
 	char	**docs;
 
-	if (envp != NULL)
-	{
-		env = 0;
-		if (!(cmd[0] == '.' && cmd[1] == '/'))
-			env = search_path(envp);
+	env = 0;
+	if (!(cmd[0] == '.' && cmd[1] == '/'))
+		env = search_path(envp);
+	if (env != -1)
 		docs = split_docs(envp[env]);
-	}
 	else
-		docs = split_docs(ft_strdup(PATH));
-	file = access_cmd(cmd, docs);
+		docs = split_docs(DEF_PATH);
+	file = access_cmd(cmd, docs, env);
 	free(docs);
 	return (file);
 }

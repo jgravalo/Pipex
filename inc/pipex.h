@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:24:32 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/20 14:33:48 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:14:47 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include "pipex.h"
 
 # define SIZE 512
-# define PATH "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# define DEF_PATH "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:"
 
 typedef struct s_pipex{
 	int		fdin;
@@ -50,7 +50,7 @@ int		search_path(char **envp);
 
 char	**split_docs(char *path);
 
-char	*access_cmd(char *comm, char **docs);//, int env);
+char	*access_cmd(char *comm, char **docs, int env);
 
 char	*file_cmd(char *cmd, char **envp);
 
