@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 13:29:05 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/25 13:36:09 by jgravalo         ###   ########.fr       */
+/*   Updated: 2023/05/25 14:42:10 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,41 +73,21 @@ char	*mark_str(char const *s, char c, int *n)
 	while (*s && !(*s == c && *(s - 1) != '\\') && ++i)
 		s++;
 	new = ft_substr(s - i, 0, i);
-	*n = i;
+	*n = i + 1;
 	return (new);
 }
 
-//int	ft_split_marks(char const *s, char c, int *j, char **res)
-const char	*ft_split_marks(char const *s, char c, int *j, char **res)
+char	*c_str(char const *s, char c, int *n)
 {
 	int		i;
-	int		tmp;
+	char	*new;
 
-	tmp = 0;
 	i = 0;
-	if (*s != c)
-	{
-		if (*s == '\"' && *(s - 1) != '\\' && ++s && ++tmp)
-		{
-			res[*j++] = mark_str(s, '\"', &i);
-			s += i + 1;
-		}
-		else if (*s == '\'' && *(s - 1) != '\\' && ++s && ++tmp)
-		{
-			res[*j++] = mark_str(s, '\'', &i);
-			s += i + 1;
-		}
-		else
-			while (*s && *s != c && ++i)
-				s++;
-		if (tmp == 0)
-		{
-			res[*j++] = ft_substr(s - i, 0, i);
-//			return (i);
-		}
-	}
-//	return (i + 1);
-	return (s);
+	while (*s && *s != c && ++i)
+		s++;
+	new = ft_substr(s - i, 0, i);
+	*n = i;
+	return (new);
 }
 
 char	**ft_split(char const *s, char c)
@@ -115,7 +95,6 @@ char	**ft_split(char const *s, char c)
 	char	**res;
 	int		j;
 	int		i;
-	int		tmp;
 
 	j = 0;
 	res = (char **) malloc((words(s, c) * (sizeof(char *))) + 8);
@@ -123,31 +102,19 @@ char	**ft_split(char const *s, char c)
 		return (0);
 	while (*s)
 	{
-//		s = ft_split_marks(s, c, &j, res) + 1;
-		//
 		if (*s != c)
 		{
-			tmp = 0;
 			i = 0;
-			if (*s == '\"' && *(s - 1) != '\\' && ++s && ++tmp)
-			{
+			if (*s == '\"' && *(s - 1) != '\\' && ++s)
 				res[j++] = mark_str(s, '\"', &i);
-				s += i + 1;
-			}
-			else if (*s == '\'' && *(s - 1) != '\\' && ++s && ++tmp)
-			{
+			else if (*s == '\'' && *(s - 1) != '\\' && ++s)
 				res[j++] = mark_str(s, '\'', &i);
-				s += i + 1;
-			}
-			while (*s && *s != c && ++i)
-				s++;
-			if (tmp == 0)
-				res[j++] = ft_substr(s - i, 0, i);
+			else
+				res[j++] = c_str(s, c, &i);
+			s += i;
 		}
-		//
 		else
 			++s;
 	}
-	res[j] = NULL;
 	return (res);
 }
