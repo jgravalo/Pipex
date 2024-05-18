@@ -1,19 +1,28 @@
-SRCS	= src/pipex.c src/make_pipex.c src/utils.c src/ft_split_marks.c src/access_cmd.c src/errors.c
+FILES		= pipex.c make_pipex.c utils.c ft_split_marks.c access_cmd.c errors.c
 
-OBJS	= $(SRCS:.c=.o)
+SRCS		= $(addprefix src/, $(FILES))
 
-CC		= gcc
+BONUS_SRCS	= $(addprefix bonus/, $(FILES))
 
-CFLAGS	= -Wall -Werror -Wextra
+OBJS		= $(SRCS:.c=.o)
 
-RM		= rm -rf
+BONUS_OBJS	= $(BONUS_SRCS:.c=.o)
 
-NAME	= pipex
+CC			= gcc
+
+CFLAGS		= -Wall -Werror -Wextra
+
+RM			= rm -rf
+
+NAME		= pipex
 
 all:	$(NAME)
 
 $(NAME) : $(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+bonus:
+		$(CC) $(CFLAGS) $(BONUS_OBJS) -o pipex_bonus
 
 clean:
 		$(RM) $(OBJS)
