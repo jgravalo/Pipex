@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgravalo <jgravalo@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jgravalo <jgravalo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 13:29:05 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/22 18:19:41 by jgravalo         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:55:17 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/pipex.h"
+#include "../inc/pipex_bonus.h"
 
 size_t	ft_strlen(const char *str)
 {

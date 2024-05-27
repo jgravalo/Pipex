@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
+/*   By: jgravalo <jgravalo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:03:32 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/25 12:46:54 by jgravalo         ###   ########.fr       */
+/*   Updated: 2024/05/27 22:36:08 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/pipex.h"
+#include "../inc/pipex_bonus.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -30,29 +30,34 @@ int	main(int argc, char **argv, char **envp)
 		file_error("Error: ", 32);
 	pipex1.pid = fork();
 	if (pipex1.pid == 0)
-		if (child1(&pipex1, pipex2, argv, envp) == -1)
+		if (child1(&pipex1, &pipex2, argv, envp) == -1)
 			i = 127;
-
+/* 
 	while (j < argc - 5)
 	{
-		pipex1.tube = pipex2.tube;
-		//dup2(pipex2.tube[0], pipex1.tube[0]);
-		//dup2(pipex2.tube[1], pipex1.tube[1]);
+		//pipex1.tube = pipex2.tube;
+		dup2(pipex2.tube[0], pipex1.tube[0]);
+		dup2(pipex2.tube[1], pipex1.tube[1]);
+		dup2(pipex2.fdout, pipex1.fdout);
 		if (pipe(pipex2.tube) < 0)
 			file_error("Error: ", 32);
 		pipex1.pid = fork();
 		if (pipex1.pid == 0)
-			if (childn(&pipex1, pipex2, argv, envp) == -1)
+			if (childn(&pipex1, &pipex2, argv, envp) == -1)
 				i = 127;
 		close(pipex1.tube[0]);
 		close(pipex1.tube[1]);
 	}
+	 */
+	
 	pipex2.pid = fork();
 	if (pipex2.pid == 0)
 		if (child2(&pipex1, &pipex2, argv, envp) == -1)
-			i = 127;
+			i = 127;	
 	close(pipex1.tube[0]);
 	close(pipex1.tube[1]);
+	close(pipex2.tube[0]);
+	close(pipex2.tube[1]);
 	waitpid(pipex1.pid, NULL, 0);
 	while (j < argc - 5)
 		waitpid(pipex1.pid, NULL, 0);
@@ -64,9 +69,10 @@ int	main(int argc, char **argv, char **envp)
 int	child1(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp)
 {
 	close(pipex2->tube[0]);
+	close(pipex1->tube[1]);
 	pipex1->args = make_args(argv[2]);
-	pipex1->args = make_args_file(pipex->args, argv[1]);
-	pipex1->cmd = file_cmd(pipex->args[0], envp);
+	pipex1->args = make_args_file(pipex1->args, argv[1]);
+	pipex1->cmd = file_cmd(pipex1->args[0], envp);
 	if (!pipex1->cmd)
 	{
 		file_error(pipex1->args[0], 3);
@@ -76,8 +82,18 @@ int	child1(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp)
 	dup2(1, 10);
 	dup2(pipex2->tube[1], 1);
 	dup2(pipex1->fdin, 0);
+	/* 
+	char buffer[10];
+	read(0, buffer, 10);
+	write(pipex2->tube[1], buffer, 10);
+	char buffer2[10];
+	read(pipex2->tube[0], buffer2, 10);
+	write(2, buffer2, 10);
+	 */
 	close(pipex2->tube[1]);
+	close(pipex1->tube[0]);
 	execve(pipex1->cmd, pipex1->args, envp);
+	write(2, "aqui\n", 5);
 	exit(1);
 }
 
@@ -104,6 +120,8 @@ int	childn(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp)
 
 int	child2(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp)
 {
+	close(pipex1->tube[1]);
+	close(pipex1->tube[0]);
 	close(pipex2->tube[1]);
 	pipex1->args = make_args(argv[3]);
 	pipex1->cmd = file_cmd(pipex1->args[0], envp);
@@ -115,7 +133,12 @@ int	child2(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp)
 	}
 	dup2(1, 10);
 	dup2(pipex2->tube[0], 0);
-	dup2(pipex1->fdout, 1);
+	/* 
+	char buffer2[12];
+	read(0, buffer2, 12);
+	write(pipex2->fdout, buffer2, 12);
+	 */
+	dup2(pipex2->fdout, 1);
 	close(pipex2->tube[0]);
 	execve(pipex1->cmd, pipex1->args, envp);
 	exit(1);

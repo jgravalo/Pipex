@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
+/*   By: jgravalo <jgravalo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:56:43 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/25 13:12:28 by jgravalo         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:55:03 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/pipex.h"
+#include "../inc/pipex_bonus.h"
 
 int	errors(t_pipex *pipex1, t_pipex *pipex2, int argc, char **argv)
 {

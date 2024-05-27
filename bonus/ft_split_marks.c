@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_marks.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgravalo <jgravalo@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jgravalo <jgravalo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 13:29:05 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/25 14:42:10 by jgravalo         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:55:07 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/pipex.h"
+#include "../inc/pipex_bonus.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {

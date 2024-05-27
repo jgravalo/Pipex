@@ -21,7 +21,7 @@ all:	$(NAME)
 $(NAME) : $(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-bonus:
+bonus:	$(BONUS_OBJS)
 		$(CC) $(CFLAGS) $(BONUS_OBJS) -o pipex_bonus
 
 clean:

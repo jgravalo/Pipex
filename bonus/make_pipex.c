@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   make_pipex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
+/*   By: jgravalo <jgravalo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:56:43 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/25 12:47:36 by jgravalo         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:55:11 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/pipex.h"
+#include "../inc/pipex_bonus.h"
 
 int	errors_args(char **argv, char *file)
 {

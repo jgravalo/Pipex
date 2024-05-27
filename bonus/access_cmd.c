@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   access_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgravalo <jgravalo@student.42barcelona.co  +#+  +:+       +#+        */
+/*   By: jgravalo <jgravalo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:09:57 by jgravalo          #+#    #+#             */
-/*   Updated: 2023/05/25 13:23:26 by jgravalo         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:55:27 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/pipex.h"
+#include "../inc/pipex_bonus.h"
 
 int	search_path(char **envp)
 {
