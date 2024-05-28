@@ -25,10 +25,10 @@ bonus:	$(BONUS_OBJS)
 		$(CC) $(CFLAGS) $(BONUS_OBJS) -o pipex_bonus
 
 clean:
-		$(RM) $(OBJS)
+		$(RM) $(OBJS) $(BONUS_OBJS)
 
 fclean:	clean
-		$(RM) $(NAME)
+		$(RM) $(NAME) pipex_bonus
 
 re:		fclean $(NAME)
 

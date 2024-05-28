@@ -6,7 +6,7 @@
 /*   By: jgravalo <jgravalo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:03:32 by jgravalo          #+#    #+#             */
-/*   Updated: 2024/05/27 22:36:08 by jgravalo         ###   ########.fr       */
+/*   Updated: 2024/05/29 00:16:50 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,35 +32,40 @@ int	main(int argc, char **argv, char **envp)
 	if (pipex1.pid == 0)
 		if (child1(&pipex1, &pipex2, argv, envp) == -1)
 			i = 127;
-/* 
+	close(pipex1.tube[0]);
+	close(pipex1.tube[1]);
+ 	
+	pid_t	pid_aux[argc - 5];
 	while (j < argc - 5)
 	{
+		printf("aqui\n");
 		//pipex1.tube = pipex2.tube;
 		dup2(pipex2.tube[0], pipex1.tube[0]);
 		dup2(pipex2.tube[1], pipex1.tube[1]);
 		dup2(pipex2.fdout, pipex1.fdout);
 		if (pipe(pipex2.tube) < 0)
 			file_error("Error: ", 32);
-		pipex1.pid = fork();
-		if (pipex1.pid == 0)
+		pid_aux[j] = fork();// pipex1.pid 
+		if (pid_aux[j] == 0)// pipex1.pid 
 			if (childn(&pipex1, &pipex2, argv, envp) == -1)
 				i = 127;
 		close(pipex1.tube[0]);
 		close(pipex1.tube[1]);
 	}
-	 */
+
 	
 	pipex2.pid = fork();
 	if (pipex2.pid == 0)
 		if (child2(&pipex1, &pipex2, argv, envp) == -1)
 			i = 127;	
-	close(pipex1.tube[0]);
-	close(pipex1.tube[1]);
 	close(pipex2.tube[0]);
 	close(pipex2.tube[1]);
 	waitpid(pipex1.pid, NULL, 0);
-	while (j < argc - 5)
-		waitpid(pipex1.pid, NULL, 0);
+/* 	
+	j = -1;
+	while (++j && j < argc - 5)
+		waitpid(pid_aux[j], NULL, 0);
+	 */
 	waitpid(pipex2.pid, &exit, 0);
 	exit = WEXITSTATUS(exit);
 	return (exit);
