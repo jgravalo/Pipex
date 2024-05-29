@@ -66,10 +66,8 @@ char	*mark_str(char const *s, char c, int *n)
 {
 	char	*new;
 	int		i;
-	int		tmp;
 
 	i = 0;
-	tmp = 0;
 	while (*s && !(*s == c && *(s - 1) != '\\') && ++i)
 		s++;
 	new = ft_substr(s - i, 0, i);

@@ -15,24 +15,20 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
-	int		i;
 	int		exit;
 
-	i = 0;
 	exit = 0;
 	if (argc < 5)
 		return (1);
-	i = errors(&pipex, argc, argv);
+	errors(&pipex, argc, argv);
 	if (pipe(pipex.tube) < 0)
 		file_error("Error: ", 32);
 	pipex.pid1 = fork();
 	if (pipex.pid1 == 0)
-		if (child1(&pipex, argv, envp) == -1)
-			i = 127;
+		child1(&pipex, argv, envp);
 	pipex.pid2 = fork();
 	if (pipex.pid2 == 0)
-		if (child2(&pipex, argv, envp) == -1)
-			i = 127;
+		child2(&pipex, argv, envp);
 	close(pipex.tube[0]);
 	close(pipex.tube[1]);
 	waitpid(pipex.pid1, NULL, 0);

@@ -16,22 +16,19 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex1;
 	t_pipex	pipex2;
-	int		i;
 	int		j;
 	int		exit;
 
-	i = 0;
 	j = 0;
 	exit = 0;
 	if (argc < 5)
 		return (1);
-	i = errors(&pipex1, &pipex2, argc, argv);
+	errors(&pipex1, &pipex2, argc, argv);
 	if (pipe(pipex2.tube) < 0)
 		file_error("Error: ", 32);
 	pipex1.pid = fork();
 	if (pipex1.pid == 0)
-		if (child1(&pipex1, &pipex2, argv, envp) == -1)
-			i = 127;
+		child1(&pipex1, &pipex2, argv, envp);
 	close(pipex1.tube[0]);
 	close(pipex1.tube[1]);
  	
@@ -47,8 +44,7 @@ int	main(int argc, char **argv, char **envp)
 			file_error("Error: ", 32);
 		pid_aux[j] = fork();// pipex1.pid 
 		if (pid_aux[j] == 0)// pipex1.pid 
-			if (childn(&pipex1, &pipex2, argv, envp) == -1)
-				i = 127;
+			childn(&pipex1, &pipex2, argv, envp);
 		close(pipex1.tube[0]);
 		close(pipex1.tube[1]);
 	}
@@ -56,8 +52,7 @@ int	main(int argc, char **argv, char **envp)
 	
 	pipex2.pid = fork();
 	if (pipex2.pid == 0)
-		if (child2(&pipex1, &pipex2, argv, envp) == -1)
-			i = 127;	
+		child2(&pipex1, &pipex2, argv, envp);
 	close(pipex2.tube[0]);
 	close(pipex2.tube[1]);
 	waitpid(pipex1.pid, NULL, 0);
