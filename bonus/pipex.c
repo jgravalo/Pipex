@@ -16,10 +16,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex1;
 	t_pipex	pipex2;
-	int		j;
 	int		exit;
 
-	j = 0;
 	exit = 0;
 	if (argc < 5)
 		return (1);
@@ -31,7 +29,9 @@ int	main(int argc, char **argv, char **envp)
 		child1(&pipex1, &pipex2, argv, envp);
 	close(pipex1.tube[0]);
 	close(pipex1.tube[1]);
- 	
+ /*	
+	int		j;
+	j = 0;
 	pid_t	pid_aux[argc - 5];
 	while (j < argc - 5)
 	{
@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **envp)
 		close(pipex1.tube[0]);
 		close(pipex1.tube[1]);
 	}
-
+*/
 	
 	pipex2.pid = fork();
 	if (pipex2.pid == 0)
