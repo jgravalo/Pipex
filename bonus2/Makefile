@@ -1,6 +1,7 @@
 NAME	= pipex
 SRCS	= pipex.c
-OBJS	= $(SRCS:.c=.o)
+GNL		= get_next_line.c get_next_line_utils.c
+OBJS	= $(SRCS:.c=.o) $(GNL:.c=.o)
 CC		= cc -Wall -Werror -Wextra
 RM		= rm -rf
 
