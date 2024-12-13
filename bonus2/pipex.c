@@ -3,9 +3,9 @@
 
 void	ft_strerror(char *file, int i)
 {
-	write(2, file, /* ft_ */strlen(file));
+	write(2, file, ft_strlen(file));
 	write(2, ": ", 2);
-	write(2, strerror(i), /* ft_ */strlen(strerror(i)));
+	write(2, strerror(i), ft_strlen(strerror(i)));
 	write(2, "\n", 1);
 }
 
@@ -16,7 +16,6 @@ void	error(t_pipex *pipex, char *file, int i)
 	if (i == 1)
 		perror(file);
 	else if (i == 2)
-		//printf("%s: %s\n", strerror(13), file); // BORRAR
 		ft_strerror(file, 13);
 	else if (i == 3)
 		write(2, "too few arguments\n", 18);
@@ -35,10 +34,6 @@ void	parse_argv(t_pipex	*pipex, int argc, char **argv)
 		pipex->here_doc = 1;
 		if (argc < 6)
 			error(pipex, argv[argc - 1], 3);
-		/* {
-			write(2, "Pipex: too few arguments\n", 25);
-			return ;
-		} */
 		if (!access(argv[argc - 1], F_OK) && access(argv[argc - 1], W_OK))
 			error(pipex, argv[argc - 1], 2);
 		pipex->fdout = open(argv[argc - 1], O_RDONLY | O_CREAT | O_APPEND);
@@ -70,18 +65,54 @@ void	parse_argv(t_pipex	*pipex, int argc, char **argv)
 	}
 }
 
+void	child(t_pipex *pipex, int *infile, int *outfile)
+{
+	(void)pipex;
+	dup2(*infile, 0);
+	dup2(*outfile, 1);
+	// if (execve(pipex->cmd, pipex->args, pipex->envp))
+		exit(1);
+}
+
+void	do_pipex(t_pipex *pipex, char *arg, int *infile, int *outfile)
+{
+	pid_t	id;//[argc - 3 - pipex->here_doc];
+
+	pipex->args = ft_split(arg, ' ');
+	for (size_t i = 0; pipex->args[i]; i++)
+	{
+		printf("args[%zu] = %s\n", i, pipex->args[i]);
+	}
+	id = fork();
+	if (id < 0)
+		error(pipex, NULL, 2);
+	// momento critico, a ver si se copia el fd
+	else if (id == 0)
+		child(pipex, infile, outfile);
+	else
+		;
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;//[argc - 3];
-
-	if (argc < 5)
-			error(&pipex, argv[argc - 1], 3);
-/*	{
-		write(2, "Pipex: too few arguments\n", 25);
-		return (1);
-	} */
-	parse_argv(&pipex, argc, argv);
+	int		i;
+	int		p1[2];//[argc - 4 - pipex->here_doc][2];
 	
-	(void)envp;
+	pipe(p1);
+	pipex.envp = envp;
+	if (argc < 5)
+		error(&pipex, argv[argc - 1], 3);
+	parse_argv(&pipex, argc, argv);
+	i = 0;
+	do_pipex(&pipex, argv[2 + pipex.here_doc], &pipex.fdin, &p1[1]);
+	i++;
+	// while (i < argc - 3)
+	// {
+	// 	do_pipex(&pipex, argv[i + 2 + pipex.here_doc]);
+	// }
+	//dup2(p1[1], p2[0]);
+	do_pipex(&pipex, argv[argc - 2], &p1[0], &pipex.fdout);
+	//waitpid(pipex.pid, NULL, 0);
 	return (0);
 }

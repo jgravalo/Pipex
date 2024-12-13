@@ -1,5 +1,5 @@
 NAME	= pipex
-SRCS	= pipex.c
+SRCS	= pipex.c pipex_utils.c
 GNL		= get_next_line.c get_next_line_utils.c
 OBJS	= $(SRCS:.c=.o) $(GNL:.c=.o)
 CC		= cc -Wall -Werror -Wextra
