@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgravalo <jgravalo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgravalo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 17:03:32 by jgravalo          #+#    #+#             */
-/*   Updated: 2024/05/29 00:16:50 by jgravalo         ###   ########.fr       */
+/*   Created: 2025/03/16 19:49:29 by jgravalo          #+#    #+#             */
+/*   Updated: 2025/03/16 19:49:33 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,141 +14,92 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_pipex	pipex1;
-	t_pipex	pipex2;
-	int		exit;
+	t_pipex	pipex;
 
-	exit = 0;
 	if (argc < 5)
+	{
+		write(2, "bad arguments\n", 14);
 		return (1);
-	errors(&pipex1, &pipex2, argc, argv);
-	if (pipe(pipex2.tube) < 0)
-		file_error("Error: ", 32);
-	pipex1.pid = fork();
-	if (pipex1.pid == 0)
-		child1(&pipex1, &pipex2, argv, envp);
-	close(pipex1.tube[0]);
-	close(pipex1.tube[1]);
- /*	
-	int		j;
-	j = 0;
-	pid_t	pid_aux[argc - 5];
-	while (j < argc - 5)
-	{
-		printf("aqui\n");
-		//pipex1.tube = pipex2.tube;
-		dup2(pipex2.tube[0], pipex1.tube[0]);
-		dup2(pipex2.tube[1], pipex1.tube[1]);
-		dup2(pipex2.fdout, pipex1.fdout);
-		if (pipe(pipex2.tube) < 0)
-			file_error("Error: ", 32);
-		pid_aux[j] = fork();// pipex1.pid 
-		if (pid_aux[j] == 0)// pipex1.pid 
-			childn(&pipex1, &pipex2, argv, envp);
-		close(pipex1.tube[0]);
-		close(pipex1.tube[1]);
 	}
-*/
-	
-	pipex2.pid = fork();
-	if (pipex2.pid == 0)
-		child2(&pipex1, &pipex2, argv, envp);
-	close(pipex2.tube[0]);
-	close(pipex2.tube[1]);
-	waitpid(pipex1.pid, NULL, 0);
-/* 	
-	j = -1;
-	while (++j && j < argc - 5)
-		waitpid(pid_aux[j], NULL, 0);
-	 */
-	waitpid(pipex2.pid, &exit, 0);
-	exit = WEXITSTATUS(exit);
-	return (exit);
+	pipex.argc = argc;
+	pipex.argv = argv;
+	pipex.envp = envp;
+	set_vars(&pipex);
+	pipex.n = argc - 3 - pipex.here_doc;
+	pipes(&pipex);
 }
 
-int	child1(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp)
+void	pipes(t_pipex *pipex)
 {
-	close(pipex2->tube[0]);
-	close(pipex1->tube[1]);
-	pipex1->args = make_args(argv[2]);
-	pipex1->args = make_args_file(pipex1->args, argv[1]);
-	pipex1->cmd = file_cmd(pipex1->args[0], envp);
-	if (!pipex1->cmd)
+	int	i;
+
+	pipex->pid = (pid_t *)malloc(sizeof(pid_t) * pipex->n);
+	pipex->p = (int **)malloc(pipex->n * sizeof(int *));
+	i = 0;
+	while (i < pipex->n - 1)
 	{
-		file_error(pipex1->args[0], 3);
-		free_child(pipex1);
-		exit(-1);
+		pipex->p[i] = (int *)malloc(2 * sizeof(int));
+		pipe(pipex->p[i]);
+		i++;
 	}
-	dup2(1, 10);
-	dup2(pipex2->tube[1], 1);
-	dup2(pipex1->fdin, 0);
-	/* 
-	char buffer[10];
-	read(0, buffer, 10);
-	write(pipex2->tube[1], buffer, 10);
-	char buffer2[10];
-	read(pipex2->tube[0], buffer2, 10);
-	write(2, buffer2, 10);
-	 */
-	close(pipex2->tube[1]);
-	close(pipex1->tube[0]);
-	execve(pipex1->cmd, pipex1->args, envp);
-	write(2, "aqui\n", 5);
-	exit(1);
+	child1(pipex);
+	childn(pipex);
+	child2(pipex);
+	closes(pipex);
+	waits(pipex);
+	free_all(pipex);
 }
 
-int	childn(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp)
+void	child1(t_pipex *pipex)
 {
-	close(pipex1->tube[1]);
-	close(pipex2->tube[0]);
-	pipex1->args = make_args(argv[3]);
-	pipex1->cmd = file_cmd(pipex1->args[0], envp);
-	if (!pipex1->cmd)
+	pipex->i = 0;
+	pipex->pid[0] = fork();
+	if (pipex->pid[0] == -1)
 	{
-		file_error(pipex1->args[0], 3);
-		free_child(pipex1);
-		exit(-1);
+		error("pipex", 10, 1);
+		exit (1);
 	}
-	dup2(1, 10);
-	dup2(pipex1->tube[0], 0);
-	dup2(pipex2->tube[1], 1);
-	close(pipex1->tube[0]);
-	close(pipex2->tube[1]);
-	execve(pipex1->cmd, pipex1->args, envp);
-	exit(1);
+	if (pipex->pid[0] == 0)
+	{
+		dup2(pipex->infile, 0);
+		dup2(pipex->p[0][1], 1);
+		exec(pipex);
+	}
+	pipex->i++;
 }
 
-int	child2(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp)
+void	childn(t_pipex *pipex)
 {
-	close(pipex1->tube[1]);
-	close(pipex1->tube[0]);
-	close(pipex2->tube[1]);
-	pipex1->args = make_args(argv[3]);
-	pipex1->cmd = file_cmd(pipex1->args[0], envp);
-	if (!pipex1->cmd)
+	while (pipex->i + 1 < pipex->n)
 	{
-		file_error(pipex1->args[0], 3);
-		free_child(pipex1);
-		exit(-1);
+		pipex->pid[pipex->i] = fork();
+		if (pipex->pid[pipex->i] == -1)
+		{
+			error("pipex", 10, 1);
+			exit (1);
+		}
+		if (pipex->pid[pipex->i] == 0)
+		{
+			dup2(pipex->p[pipex->i - 1][0], 0);
+			dup2(pipex->p[pipex->i][1], 1);
+			exec(pipex);
+		}
+		pipex->i++;
 	}
-	dup2(1, 10);
-	dup2(pipex2->tube[0], 0);
-	/* 
-	char buffer2[12];
-	read(0, buffer2, 12);
-	write(pipex2->fdout, buffer2, 12);
-	 */
-	dup2(pipex2->fdout, 1);
-	close(pipex2->tube[0]);
-	execve(pipex1->cmd, pipex1->args, envp);
-	exit(1);
 }
 
-char	**make_args(char *cmd)
+void	child2(t_pipex *pipex)
 {
-	char	**args;
-
-	args = ft_split(cmd, ' ');
-	check_marks(args);
-	return (args);
+	pipex->pid[pipex->i] = fork();
+	if (pipex->pid[pipex->i] == -1)
+	{
+		error("pipex", 10, 1);
+		exit (1);
+	}
+	if (pipex->pid[pipex->i] == 0)
+	{
+		dup2(pipex->p[pipex->i - 1][0], 0);
+		dup2(pipex->outfile, 1);
+		exec(pipex);
+	}
 }

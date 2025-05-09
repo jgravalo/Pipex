@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   utils_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgravalo <jgravalo@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jgravalo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/14 15:41:10 by jgravalo          #+#    #+#             */
-/*   Updated: 2022/07/14 15:47:36 by jgravalo         ###   ########.fr       */
+/*   Created: 2025/03/16 19:51:50 by jgravalo          #+#    #+#             */
+/*   Updated: 2025/03/16 19:51:52 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../inc/pipex_bonus.h"
 
 size_t	ft_strlen(char *str)
 {
@@ -66,6 +66,5 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[j] != '\0')
 		new[i++] = s2[j++];
 	new[ft_strlen(s1) + ft_strlen(s2)] = '\0';
-	free(s1);
 	return (new);
 }

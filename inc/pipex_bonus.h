@@ -1,78 +1,84 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.h                                      :+:      :+:    :+:   */
+/*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgravalo <jgravalo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgravalo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 17:24:32 by jgravalo          #+#    #+#             */
-/*   Updated: 2024/05/20 10:52:38 by jgravalo         ###   ########.fr       */
+/*   Created: 2025/03/16 19:57:27 by jgravalo          #+#    #+#             */
+/*   Updated: 2025/03/16 19:57:36 by jgravalo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
+# include <stdlib.h>
+# include <stdio.h>
+# include <string.h>
+# include <unistd.h>
+# include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include "pipex.h"
 
-# define SIZE 512
-# define DEF_PATH "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:"
-
-typedef struct s_pipex{
-	int		fdin;
-	int		fdout;
-	int		tube[2];
-	char	*cmd;
+typedef struct s_pipex
+{
+	int		argc;
+	char	**argv;
+	char	**envp;
+	char	**paths;
 	char	**args;
-	pid_t	pid;
+	char	*join;
+	char	*cmd;
+	pid_t	*pid;
+	char	*substr;
+	int		**p;
+	int		here_doc;
+	int		i;
+	int		n;
+	int		infile;
+	int		outfile;
 }	t_pipex;
 
-size_t	ft_strlen(const char *str);
+void	ft_strerror(char *file, char *msg);
+
+void	error(char *file, int n, int f);
+
+void	ft_free_m(char **m);
+
+void	set_vars(t_pipex *pipex);
+
+void	pipes(t_pipex *pipex);
+
+int		waits(t_pipex *pipex);
+
+void	exec(t_pipex *pipex);
+
+void	child1(t_pipex *pipex);
+
+void	childn(t_pipex *pipex);
+
+void	child2(t_pipex *pipex);
+
+void	get_paths(t_pipex *pipex);
+
+void	get_cmd(t_pipex *pipex);
+
+void	closes(t_pipex *pipex);
+
+void	here_doc(t_pipex *pipex);
+
+void	free_all(t_pipex *pipex);
+
+char	**ft_split(char *s, char c);
+
+char	*ft_substr(char *s, unsigned int start, size_t len);
 
 int		ft_strcmp(char *s1, char *s2);
 
-char	*ft_strdup(char *str);
+size_t	ft_strlen(char *str);
 
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-
-char	**ft_split(char const *s, char c);
+char	*ft_strchr(char *str, int c);
 
 char	*ft_strjoin(char *s1, char *s2);
 
-int		search_path(char **envp);
-
-char	**split_docs(char *path);
-
-char	*access_cmd(char *comm, char **docs, int env);
-
-char	*file_cmd(char *cmd, char **envp);
-
-int		child1(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp);
-
-int		childn(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp);
-
-int		child2(t_pipex *pipex1, t_pipex *pipex2, char **argv, char **envp);
-
-char	**make_args(char *cmd);
-
-void    check_marks(char **argv);
-
-//char	**check_simbols(char **args, char c);
-
-char	**make_args_file(char **argv, char *file);
-
-int		errors(t_pipex *pipex1, t_pipex *pipex2, int argc, char **argv);
-
-int		cmd_error(char *str);
-
-int		file_error(char *s, int n);
-
-void	free_child(t_pipex *pipex);
 #endif
